@@ -1,0 +1,23 @@
+package com.evolutiongaming.concurrent
+
+import com.evolutiongaming.concurrent.FutureHelper._
+import org.scalatest.{FunSuite, Matchers}
+
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future, Promise, TimeoutException}
+
+class FutureHelperSpec extends FunSuite with Matchers {
+
+  test("traverseSequentially") {
+
+    val promise = Promise[Int]()
+
+    val futures = List(Future.successful(1), promise.future, Future.successful(3))
+    val future = Future.traverseSequentially(futures)(identity)
+    the[TimeoutException] thrownBy Await.result(future, 100.millis)
+
+    promise.success(2)
+
+    Await.result(future, 3.seconds) shouldEqual List(1, 2,3)
+  }
+}
