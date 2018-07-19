@@ -10,6 +10,8 @@ object FutureHelper {
   private val futureNone = Option.empty.future
   private val futureSeq = Seq.empty.future
   private val futureNil = Nil.future
+  private val futureTrue = true.future
+  private val futureFalse = false.future
 
 
   implicit class FutureObjOps(val self: Future.type) extends AnyVal {
@@ -17,6 +19,8 @@ object FutureHelper {
     def none[T]: Future[Option[T]] = futureNone
     def seq[T]: Future[Seq[T]] = futureSeq
     def nil[T]: Future[List[T]] = futureNil
+    def `true`: Future[Boolean] = futureTrue
+    def `false`: Future[Boolean] = futureFalse
   }
 
 
