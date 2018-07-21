@@ -18,6 +18,11 @@ class FutureHelperSpec extends FunSuite with Matchers {
 
     promise.success(2)
 
-    Await.result(future, 3.seconds) shouldEqual List(1, 2,3)
+    Await.result(future, 3.seconds) shouldEqual List(1, 2, 3)
+  }
+
+  test("mapTo") {
+    val future = Future.successful(1).mapVal("1")
+    Await.result(future, 3.seconds) shouldEqual "1"
   }
 }
