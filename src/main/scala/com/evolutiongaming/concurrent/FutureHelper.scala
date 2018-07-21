@@ -25,7 +25,8 @@ object FutureHelper {
 
 
   implicit class FutureOps[T](val self: Future[T]) extends AnyVal {
-    def unit: Future[Unit] = self.map { _ => {} }(CurrentThreadExecutionContext)
+    def unit: Future[Unit] = self.map { _ => () }(CurrentThreadExecutionContext)
+    def flatten[S](implicit ev: T <:< Future[S]): Future[S] = self.flatMap(ev)(CurrentThreadExecutionContext)
   }
 
 
