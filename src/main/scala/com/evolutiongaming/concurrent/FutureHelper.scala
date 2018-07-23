@@ -1,8 +1,9 @@
 package com.evolutiongaming.concurrent
 
 import scala.collection.generic.CanBuildFrom
+import scala.collection.immutable
 import scala.collection.immutable.Seq
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.language.higherKinds
 
 object FutureHelper {
@@ -15,12 +16,33 @@ object FutureHelper {
 
 
   implicit class FutureObjOps(val self: Future.type) extends AnyVal {
+
     def unit: Future[Unit] = futureUnit
+
     def none[T]: Future[Option[T]] = futureNone
+
     def seq[T]: Future[Seq[T]] = futureSeq
+
     def nil[T]: Future[List[T]] = futureNil
+
     def `true`: Future[Boolean] = futureTrue
+
     def `false`: Future[Boolean] = futureFalse
+
+    def foldUnit[T](iter: Iterable[Future[T]])(implicit ec: ExecutionContext): Future[Unit] = {
+      Future.foldLeft(iter.toList)(()) { (_, _) => () }
+    }
+
+    def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit executor: ExecutionContext): Future[S] = {
+      val iterator = iter.iterator
+
+      def foldLeft(s: S)(implicit executor: ExecutionContext): Future[S] = {
+        if (iterator.isEmpty) s.future
+        else iterator.next().flatMap { value => foldLeft(f(s, value)) }
+      }
+
+      foldLeft(s)
+    }
   }
 
 
