@@ -3,8 +3,10 @@ package com.evolutiongaming.concurrent
 import scala.collection.generic.CanBuildFrom
 import scala.collection.immutable
 import scala.collection.immutable.Seq
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.language.higherKinds
+import scala.util.control.NonFatal
+import scala.util.{Failure, Try}
 
 object FutureHelper {
   private val futureUnit = ().future
@@ -47,9 +49,18 @@ object FutureHelper {
 
 
   implicit class FutureOps[T](val self: Future[T]) extends AnyVal {
+
     def mapVal[TT](value: TT): Future[TT] = self.map(_ => value)(CurrentThreadExecutionContext)
+
     def unit: Future[Unit] = mapVal(())
-    def flatten[S](implicit ev: T <:< Future[S]): Future[S] = self.flatMap(ev)(CurrentThreadExecutionContext)
+
+    def flatten[TT](implicit ev: T <:< Future[TT]): Future[TT] = self.flatMap(ev)(CurrentThreadExecutionContext)
+
+    def transform[TT](f: Try[T] => Try[TT])(implicit executor: ExecutionContext): Future[TT] = {
+      val p = Promise[TT]()
+      self.onComplete { result => p.complete(try f(result) catch { case NonFatal(t) => Failure(t) }) }
+      p.future
+    }
   }
 
 
