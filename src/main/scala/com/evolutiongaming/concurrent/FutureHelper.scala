@@ -35,10 +35,10 @@ object FutureHelper {
       Future.foldLeft(iter.toList)(()) { (_, _) => () }
     }
 
-    def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit executor: ExecutionContext): Future[S] = {
+    def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit ec: ExecutionContext): Future[S] = {
       val iterator = iter.iterator
 
-      def foldLeft(s: S)(implicit executor: ExecutionContext): Future[S] = {
+      def foldLeft(s: S): Future[S] = {
         if (iterator.isEmpty) s.future
         else iterator.next().flatMap { value => foldLeft(f(s, value)) }
       }
@@ -62,7 +62,7 @@ object FutureHelper {
 
     def flatten[TT](implicit ev: T <:< Future[TT]): Future[TT] = self.flatMap(ev)(CurrentThreadExecutionContext)
 
-    def transform[TT](f: Try[T] => Try[TT])(implicit executor: ExecutionContext): Future[TT] = {
+    def transform[TT](f: Try[T] => Try[TT])(implicit ec: ExecutionContext): Future[TT] = {
       val p = Promise[TT]()
       self.onComplete { result => p.complete(try f(result) catch { case NonFatal(t) => Failure(t) }) }
       p.future
