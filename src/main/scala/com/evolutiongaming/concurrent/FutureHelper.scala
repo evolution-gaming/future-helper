@@ -47,10 +47,10 @@ object FutureHelper {
     }
 
     def sequenceSuccessful[A, M[X] <: TraversableOnce[X]](in: M[Future[A]])(implicit cbf: CanBuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
-      def wrap(f: Future[A]): Future[Option[A]] = f.map(Some.apply).recover { case _ => None }
+      def wrap(f: Future[A]): Future[Option[A]] = f.map(Some.apply).recover { case NonFatal(_) => None }
 
       in.foldLeft(Future.successful(cbf(in))) {
-        (acc, f) => acc.zipWith(wrap(f))(_ ++= _)
+        (acc, f) => for (r <- acc; a <- wrap(f)) yield r ++= a
       }.map(_.result())(CurrentThreadExecutionContext)
     }
   }
