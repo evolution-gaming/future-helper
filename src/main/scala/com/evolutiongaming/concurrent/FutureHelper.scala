@@ -46,7 +46,7 @@ object FutureHelper {
       foldLeft(s)
     }
 
-    def sequenceSuccesful[A, M[X] <: TraversableOnce[X]](in: M[Future[A]])(implicit cbf: CanBuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
+    def sequenceSuccessful[A, M[X] <: TraversableOnce[X]](in: M[Future[A]])(implicit cbf: CanBuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
       def wrap(f: Future[A]): Future[Option[A]] = f.map(Some.apply).recover { case _ => None }
 
       in.foldLeft(Future.successful(cbf(in))) {
