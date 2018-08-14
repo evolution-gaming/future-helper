@@ -48,7 +48,7 @@ object FutureHelper {
 
     def sequenceSuccessful[A, M[X] <: TraversableOnce[X]](in: M[Future[A]])(implicit cbf: CanBuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
       in.foldLeft(Future.successful(cbf(in))) {
-        (acc, f) => acc.flatMap(acc => f.map(acc += _).recover{ case NonFatal(_) => acc })
+        (acc, f) => acc.flatMap(acc => f.map(acc += _).recover { case _ => acc })
       }.map(_.result())(CurrentThreadExecutionContext)
     }
   }
