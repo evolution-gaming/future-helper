@@ -31,8 +31,8 @@ object FutureHelper {
 
     def `false`: Future[Boolean] = futureFalse
 
-    def foldUnit[T](iter: Iterable[Future[T]])(implicit ec: ExecutionContext): Future[Unit] = {
-      Future.foldLeft(iter.toList)(()) { (_, _) => () }
+    def foldUnit[T](iter: Iterable[Future[T]]): Future[Unit] = {
+      Future.foldLeft(iter.toList)(()) { (_, _) => () }(CurrentThreadExecutionContext)
     }
 
     def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit ec: ExecutionContext): Future[S] = {
