@@ -26,7 +26,7 @@ class FutureHelperSpec extends FunSuite with Matchers {
     Await.result(future, 3.seconds) shouldEqual "1"
   }
 
-  test("sequenceSuccesful") {
+  test("sequenceSuccessful") {
     implicit val ec = CurrentThreadExecutionContext
     val futures = List(Future.successful(1), Future.failed(new RuntimeException()), Future.successful(3))
     Await.result(Future.sequenceSuccessful(futures), 3.seconds) shouldEqual List(1, 3)
