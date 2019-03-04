@@ -56,9 +56,12 @@ object FutureHelper {
 
   implicit class FutureOps[T](val self: Future[T]) extends AnyVal {
 
-    def mapVal[TT](value: TT): Future[TT] = self.map(_ => value)(CurrentThreadExecutionContext)
+    @deprecated("use `as` instead", "1.0.4")
+    def mapVal[TT](value: TT): Future[TT] = as(value)
 
-    def unit: Future[Unit] = mapVal(())
+    def as[TT](value: TT): Future[TT] = self.map(_ => value)(CurrentThreadExecutionContext)
+
+    def unit: Future[Unit] = as(())
 
     def flatten[TT](implicit ev: T <:< Future[TT]): Future[TT] = self.flatMap(ev)(CurrentThreadExecutionContext)
 

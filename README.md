@@ -9,5 +9,5 @@ See [FutureHelper.scala](src/main/scala/com/evolutiongaming/concurrent/FutureHel
 ```scala
 resolvers += Resolver.bintrayRepo("evolutiongaming", "maven")
 
-libraryDependencies += "com.evolutiongaming" %% "future-helper" % "1.0.0"
+libraryDependencies += "com.evolutiongaming" %% "future-helper" % "1.0.4"
 ```
