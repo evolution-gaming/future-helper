@@ -31,8 +31,13 @@ object FutureHelper {
 
     def `false`: Future[Boolean] = futureFalse
 
+    @deprecated("use `foldUnit1` instead", "1.0.5")
     def foldUnit[T](iter: Iterable[Future[T]]): Future[Unit] = {
-      Future.foldLeft(iter.toList)(()) { (_, _) => () }(CurrentThreadExecutionContext)
+      self.foldUnit1(iter)(CurrentThreadExecutionContext)
+    }
+
+    def foldUnit1[T](iter: Iterable[Future[T]])(implicit executor: ExecutionContext): Future[Unit] = {
+      Future.foldLeft(iter.toList)(()) { (_, _) => () }
     }
 
     def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit ec: ExecutionContext): Future[S] = {
