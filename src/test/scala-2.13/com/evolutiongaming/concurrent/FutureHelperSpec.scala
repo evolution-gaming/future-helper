@@ -1,13 +1,14 @@
 package com.evolutiongaming.concurrent
 
 import com.evolutiongaming.concurrent.FutureHelper._
-import org.scalatest.{FunSuite, Matchers}
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future, Promise, TimeoutException}
 import scala.util.Success
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-class FutureHelperSpec extends FunSuite with Matchers {
+class FutureHelperSpec extends AnyFunSuite with Matchers {
   import FutureHelperSpec._
 
   test("traverseSequentially") {
