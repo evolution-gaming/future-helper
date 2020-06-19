@@ -20,7 +20,7 @@ resolvers += Resolver.bintrayRepo("evolutiongaming", "maven")
 
 libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.2",
-  "org.scalatest"       %% "scalatest"      % "3.0.8" % Test)
+  "org.scalatest"       %% "scalatest"      % "3.2.0" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
