@@ -95,7 +95,7 @@ object FutureHelper {
           prev <- prev
           next <- f(next)
         } yield prev += next
-      } map { builder => builder.result }
+      }.map { builder => builder.result() }
     }
   }
 }

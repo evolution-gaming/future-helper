@@ -3,7 +3,6 @@ package com.evolutiongaming.concurrent
 import scala.collection.{BuildFrom, immutable}
 import scala.collection.immutable.Seq
 import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.language.higherKinds
 import scala.util.control.NonFatal
 import scala.util.{Failure, Try}
 
@@ -94,7 +93,7 @@ object FutureHelper {
           prev <- prev
           next <- f(next)
         } yield prev += next
-      } map { builder => builder.result }
+      }.map { builder => builder.result() }
     }
   }
 }
