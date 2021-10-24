@@ -17,7 +17,7 @@ crossScalaVersions := Seq("2.13.5", "2.12.13")
 publishTo := Some(Resolver.evolutionReleases)
 
 libraryDependencies ++= Seq(
-  "com.evolutiongaming" %% "executor-tools" % "1.0.2",
+  "com.evolutiongaming" %% "executor-tools" % "1.0.3",
   "org.scalatest"       %% "scalatest"      % "3.0.8" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
