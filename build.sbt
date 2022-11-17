@@ -14,8 +14,6 @@ scalaVersion := crossScalaVersions.value.head
 
 crossScalaVersions := Seq("2.13.10", "2.12.17", "3.2.1")
 
-scalacOptions in (Compile,doc) ++= Seq("-groups", "-implicits", "-no-link-warnings")
-
 publishTo := Some(Resolver.evolutionReleases)
 
 libraryDependencies ++= Seq(
@@ -25,5 +23,3 @@ libraryDependencies ++= Seq(
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
 releaseCrossBuild := true
-
-scalacOptsFailOnWarn := Some(false)
