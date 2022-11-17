@@ -8,11 +8,13 @@ startYear := Some(2018)
 
 organizationName := "Evolution"
 
-organizationHomepage := Some(url("http://evolutiongaming.com"))
+organizationHomepage := Some(url("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
 crossScalaVersions := Seq("2.13.10", "2.12.17", "3.2.1")
+
+scalacOptions in (Compile,doc) ++= Seq("-groups", "-implicits", "-no-link-warnings")
 
 publishTo := Some(Resolver.evolutionReleases)
 
@@ -23,3 +25,5 @@ libraryDependencies ++= Seq(
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
 releaseCrossBuild := true
+
+scalacOptsFailOnWarn := Some(false)
