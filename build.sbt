@@ -8,17 +8,17 @@ startYear := Some(2018)
 
 organizationName := "Evolution"
 
-organizationHomepage := Some(url("http://evolutiongaming.com"))
+organizationHomepage := Some(url("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.13.5", "2.12.13")
+crossScalaVersions := Seq("2.13.10", "2.12.17", "3.2.1")
 
 publishTo := Some(Resolver.evolutionReleases)
 
 libraryDependencies ++= Seq(
-  "com.evolutiongaming" %% "executor-tools" % "1.0.2",
-  "org.scalatest"       %% "scalatest"      % "3.0.8" % Test)
+  "com.evolutiongaming" %% "executor-tools" % "1.0.4",
+  "org.scalatest"       %% "scalatest"      % "3.2.14" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
