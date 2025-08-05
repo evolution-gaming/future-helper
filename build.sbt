@@ -18,7 +18,7 @@ publishTo := Some(Resolver.evolutionReleases)
 
 libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.4",
-  "org.scalatest"       %% "scalatest"      % "3.2.14" % Test)
+  "org.scalatest"       %% "scalatest"      % "3.2.19" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
