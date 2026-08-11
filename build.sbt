@@ -4,13 +4,13 @@ name := "future-helper"
 
 organization := "com.evolutiongaming"
 
-homepage := Some(url("https://github.com/evolution-gaming/future-helper"))
+homepage := Some(uri("https://github.com/evolution-gaming/future-helper"))
 
 startYear := Some(2018)
 
 organizationName := "Evolution"
 
-organizationHomepage := Some(url("https://evolution.com"))
+organizationHomepage := Some(uri("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.5",
   "org.scalatest"       %% "scalatest"      % "3.2.20" % Test)
 
-licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
+licenses := Seq(("MIT", uri("https://opensource.org/licenses/MIT")))
 
 addCommandAlias("check", "all versionPolicyCheck Compile/doc")
-addCommandAlias("build", "+all compile test")
+addCommandAlias("build", "+all compile testFull")
