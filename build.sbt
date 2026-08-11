@@ -12,13 +12,13 @@ organizationHomepage := Some(url("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.13.10", "2.12.17", "3.2.1")
+crossScalaVersions := Seq("2.13.18", "2.12.17", "3.2.1")
 
 publishTo := Some(Resolver.evolutionReleases)
 
 libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.5",
-  "org.scalatest"       %% "scalatest"      % "3.2.19" % Test)
+  "org.scalatest"       %% "scalatest"      % "3.2.20" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
