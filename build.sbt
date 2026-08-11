@@ -1,3 +1,5 @@
+import sbtversionpolicy.Compatibility.BinaryCompatible
+
 name := "future-helper"
 
 organization := "com.evolutiongaming"
@@ -16,12 +18,13 @@ crossScalaVersions := Seq("2.13.18", "2.12.17", "3.2.1")
 
 publishTo := Some(Resolver.evolutionReleases)
 
+versionPolicyIntention := BinaryCompatible
+
 libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.5",
   "org.scalatest"       %% "scalatest"      % "3.2.20" % Test)
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
-//addCommandAlias("check", "all versionPolicyCheck Compile/doc")
-addCommandAlias("check", "show version")
+addCommandAlias("check", "all versionPolicyCheck Compile/doc")
 addCommandAlias("build", "+all compile test")
