@@ -58,7 +58,8 @@ class FutureHelperSpec extends AnyFunSuite with Matchers {
   test("foldLeft") {
     val futures = List(Future.successful(1), Future.successful(2))
     val ops = FutureHelper.FutureObjOps(Future)
-    ops.foldLeft(futures)(List.empty[Int]) { (s, a) => a :: s }(CurrentThreadExecutionContext).await() shouldEqual List(2, 1)
+    ops.foldLeft(futures)(List.empty[Int]) { (s, a) => a :: s }(CurrentThreadExecutionContext).await() shouldEqual
+      List(2, 1)
   }
 }
 

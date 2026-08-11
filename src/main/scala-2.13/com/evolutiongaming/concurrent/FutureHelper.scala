@@ -1,7 +1,7 @@
 package com.evolutiongaming.concurrent
 
-import scala.collection.{BuildFrom, immutable}
 import scala.collection.immutable.Seq
+import scala.collection.{BuildFrom, immutable}
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.control.NonFatal
 import scala.util.{Failure, Try}
@@ -13,7 +13,6 @@ object FutureHelper {
   private val futureNil = Nil.future
   private val futureTrue = true.future
   private val futureFalse = false.future
-
 
   implicit class FutureObjOps(val self: Future.type) extends AnyVal {
 
@@ -34,11 +33,23 @@ object FutureHelper {
       self.foldUnit1(iter)(CurrentThreadExecutionContext)
     }
 
-    def foldUnit1[T](iter: Iterable[Future[T]])(implicit executor: ExecutionContext): Future[Unit] = {
+    def foldUnit1[T](
+      iter: Iterable[Future[T]],
+    )(implicit
+      executor: ExecutionContext,
+    ): Future[Unit] = {
       Future.foldLeft(iter.toList)(()) { (_, _) => () }
     }
 
-    def foldLeft[T, S](iter: immutable.Iterable[Future[T]])(s: S)(f: (S, T) => S)(implicit ec: ExecutionContext): Future[S] = {
+    def foldLeft[T, S](
+      iter: immutable.Iterable[Future[T]],
+    )(
+      s: S,
+    )(
+      f: (S, T) => S,
+    )(implicit
+      ec: ExecutionContext,
+    ): Future[S] = {
       val iterator = iter.iterator
 
       def foldLeft(s: S): Future[S] = {
@@ -49,13 +60,17 @@ object FutureHelper {
       foldLeft(s)
     }
 
-    def sequenceSuccessful[A, M[X] <: IterableOnce[X]](in: M[Future[A]])(implicit cbf: BuildFrom[M[Future[A]], A, M[A]], executor: ExecutionContext): Future[M[A]] = {
+    def sequenceSuccessful[A, M[X] <: IterableOnce[X]](
+      in: M[Future[A]],
+    )(implicit
+      cbf: BuildFrom[M[Future[A]], A, M[A]],
+      executor: ExecutionContext,
+    ): Future[M[A]] = {
       in.iterator.foldLeft(Future.successful(cbf.newBuilder(in))) {
         (acc, f) => acc.flatMap(acc => f.map(acc += _).recover { case _ => acc })
       }.map(_.result())(CurrentThreadExecutionContext)
     }
   }
-
 
   implicit class FutureOps[T](val self: Future[T]) extends AnyVal {
 
@@ -66,22 +81,36 @@ object FutureHelper {
 
     def unit: Future[Unit] = as(())
 
-    def flatten[TT](implicit ev: T <:< Future[TT]): Future[TT] = self.flatMap(ev)(CurrentThreadExecutionContext)
+    def flatten[TT](
+      implicit
+      ev: T <:< Future[TT],
+    ): Future[TT] = self.flatMap(ev)(CurrentThreadExecutionContext)
 
-    def transform[TT](f: Try[T] => Try[TT])(implicit ec: ExecutionContext): Future[TT] = {
+    def transform[TT](
+      f: Try[T] => Try[TT],
+    )(implicit
+      ec: ExecutionContext,
+    ): Future[TT] = {
       val p = Promise[TT]()
-      self.onComplete { result => p.complete(try f(result) catch { case NonFatal(t) => Failure(t) }) }
+      self.onComplete { result =>
+        p.complete(try f(result)
+        catch { case NonFatal(t) => Failure(t) })
+      }
       p.future
     }
   }
-
 
   implicit class AnyFutureOps[T](val self: T) extends AnyVal {
 
     def future: Future[T] = Future.successful(self)
 
-    def traverseSequentially[A, B, M[X] <: IterableOnce[X]](in: M[A])(f: A => Future[B])
-      (implicit buildFrom: BuildFrom[M[A], B, M[B]]): Future[M[B]] = {
+    def traverseSequentially[A, B, M[X] <: IterableOnce[X]](
+      in: M[A],
+    )(
+      f: A => Future[B],
+    )(implicit
+      buildFrom: BuildFrom[M[A], B, M[B]],
+    ): Future[M[B]] = {
 
       implicit val ec = CurrentThreadExecutionContext
 

@@ -22,9 +22,11 @@ versionPolicyIntention := BinaryCompatible
 
 libraryDependencies ++= Seq(
   "com.evolutiongaming" %% "executor-tools" % "1.0.5",
-  "org.scalatest"       %% "scalatest"      % "3.2.20" % Test)
+  "org.scalatest" %% "scalatest" % "3.2.20" % Test,
+)
 
 licenses := Seq(("MIT", uri("https://opensource.org/licenses/MIT")))
 
-addCommandAlias("check", "all versionPolicyCheck Compile/doc")
+addCommandAlias("check", "all versionPolicyCheck scalafmtCheckRepo Compile/doc")
+addCommandAlias("fmt", "+scalafmtRepo")
 addCommandAlias("build", "+all compile testFull")
